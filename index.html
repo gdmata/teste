@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bíblia Sagrada</title>
+    <!-- Fonte clássica serifada para cara de livro antigo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: #1a1614;
+        background-image: radial-gradient(#2d241f 1px, transparent 0);
+        background-size: 24px 24px;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Playfair Display", Georgia, serif;
+        padding: 20px;
+      }
+
+      /* Moldura externa que simula a Bíblia/Livro aberto */
+      body {
+        perspective: 1000px;
+      }
+
+      /* Estrutura do Livro */
+      body {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* Estilização da Capa / Páginas da Bíblia */
+      body::before {
+        content: "";
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      /* Container do conteúdo simulando a página interna da Bíblia */
+      body {
+        max-width: 650px;
+        width: 100%;
+        background-color: #f7f3e8; /* Cor de papel envelhecido */
+        border: 12px solid #3b2314; /* Borda couro */
+        border-radius: 8px;
+        box-shadow:
+          0 0 0 2px #d4af37,
+          /* Linha dourada */ 0 20px 40px rgba(0, 0, 0, 0.8),
+          inset 0 0 50px rgba(100, 70, 40, 0.25); /* Sombra de página antiga */
+        padding: 40px 30px;
+        text-align: center;
+        position: relative;
+      }
+
+      /* Detalhes dourados nos cantos */
+      body::after {
+        content: "✝";
+        position: absolute;
+        top: 15px;
+        font-size: 24px;
+        color: #d4af37;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Estilo do Botão */
+      button#butao {
+        font-family: "Cinzel", serif;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #f7f3e8;
+        background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
+        border: 2px solid #d4af37;
+        padding: 12px 28px;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        margin-top: 20px;
+      }
+
+      button#butao::before {
+        content: "Revelar Versículo";
+      }
+
+      button#butao:hover {
+        background: linear-gradient(135deg, #a50000 0%, #600000 100%);
+        box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+        transform: translateY(-2px);
+      }
+
+      button#butao:active {
+        transform: translateY(1px);
+      }
+
+      /* Estilo do H1 (Texto do Versículo) */
+      h1 {
+        color: #2b1d0c;
+        font-size: 1.35rem;
+        font-weight: 400;
+        line-height: 1.8;
+        font-style: italic;
+        margin-top: 30px;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        border-top: 1px solid rgba(139, 0, 0, 0.2);
+        border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+        position: relative;
+      }
+
+      /* Aspas elegantes no versículo */
+      h1:not(:empty)::before {
+        content: "“";
+        font-size: 3rem;
+        color: #8b0000;
+        position: absolute;
+        top: -15px;
+        left: 10px;
+        font-family: Georgia, serif;
+      }
+
+      h1:not(:empty)::after {
+        content: "”";
+        font-size: 3rem;
+        color: #8b0000;
+        position: absolute;
+        bottom: -35px;
+        right: 10px;
+        font-family: Georgia, serif;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="butao"></button>
+    <h1></h1>
+    <script defer>
+      const butao = document.querySelector("button");
+      const h1 = document.querySelector("h1");
+
+      butao.addEventListener("click", async () => {
+        try {
+          const response = await fetch("http://localhost:3000/");
+
+          if (!response.ok) {
+            throw new Error("Erro na rede: " + response.status);
+          }
+          const data = await response.json();
+          h1.textContent = data.text;
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    </script>
+  </body>
+</html>
