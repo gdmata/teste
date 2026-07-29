@@ -164,7 +164,8 @@
             throw new Error("Erro na rede: " + response.status);
           }
           const data = await response.json();
-          h1.textContent = data.text;
+          h1.innerHTML = `${data.text}<br> ${data.book}
+  ${data.chapter}.${data.verse}`;
         } catch (e) {
           console.error(e);
         }
